@@ -1,0 +1,219 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="SearchProduct-second.aspx.cs" Inherits="SelectThings" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
+    <div>
+        <img src="../images/logo.png" width="100" height="100" /><span style="font-size: xx-large">MyMine一下
+        </span>
+        <br>
+        <br>
+        <span style="font-size: large">請搜尋您需要的物品：</span><asp:DropDownList ID="DropDownList1" runat="server">
+            <asp:ListItem>請選擇</asp:ListItem>
+            <asp:ListItem>女生衣著</asp:ListItem>
+            <asp:ListItem>男生衣著</asp:ListItem>
+            <asp:ListItem>美妝保健</asp:ListItem>
+            <asp:ListItem>手機平板與周邊</asp:ListItem>
+            <asp:ListItem>嬰幼童與母親</asp:ListItem>
+            <asp:ListItem>3C相關</asp:ListItem>
+            <asp:ListItem>家居生活</asp:ListItem>
+            <asp:ListItem>家電影音</asp:ListItem>
+            <asp:ListItem>女生配件</asp:ListItem>
+            <asp:ListItem>男生配件</asp:ListItem>
+            <asp:ListItem>女生包包精品</asp:ListItem>
+            <asp:ListItem>戶外與運動精品</asp:ListItem>
+            <asp:ListItem>美食伴手禮</asp:ListItem>
+            <asp:ListItem>汽機車零件百貨</asp:ListItem>
+            <asp:ListItem>寵物</asp:ListItem>
+            <asp:ListItem>娛樂、收藏</asp:ListItem>
+            <asp:ListItem>服務、票卷</asp:ListItem>
+           <asp:ListItem>遊戲王</asp:ListItem>
+        </asp:DropDownList>
+        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+        <asp:Button ID="Button1" runat="server" Text="搜尋" OnClick="Button1_Click" />
+        <br />
+        <br />
+        <br />
+        <br />
+        <asp:ListView ID="ListView1" runat="server" DataSourceID="SqlDataSource1" GroupItemCount="3" OnItemCommand="ListView1_ItemCommand" DataKeyNames="pNo">
+            <AlternatingItemTemplate>
+                <td runat="server" style="background-color: #FAFAD2;color: #284775;">帳號:
+                    <asp:Label ID="accountLabel" runat="server" Text='<%# Eval("account") %>' />
+                    <br />
+                    <asp:Image ID="Image1" runat="server" Height="150px" ImageUrl='<%# Eval("picture") %>' Width="150px" />
+                    <br />種類:
+                    <asp:Label ID="categoryLabel" runat="server" Text='<%# Eval("category") %>' />
+                    <br />
+                    商品名稱:
+                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# Eval("pNo", "ProductDetail-second.aspx?pNo={0}") %>' Text='<%# Eval("pName") %>'></asp:HyperLink>
+                    <br />價格:
+                    <asp:Label ID="priceLabel" runat="server" Text='<%# Eval("price") %>' />
+                    <br />
+                    庫存:
+                    <asp:Label ID="stockLabel" runat="server" Text='<%# Eval("stock") %>' />
+                    <br />
+                    介紹:
+                    <asp:Label ID="IntroductionLabel" runat="server" Text='<%# Eval("Introduction") %>' />
+                    <br />
+                    創建時間:
+                    <asp:Label ID="createTimeLabel" runat="server" Text='<%# Eval("createTime") %>' />
+                    <br />
+                    <asp:Button ID="btn_AddCart" runat="server" CommandArgument='<%# Eval("pNo") %>' CommandName="AddCart" Text="加入購物車" OnClick="btn_AddCart_Click" />
+                    <br />
+                </td>
+            </AlternatingItemTemplate>
+            <EditItemTemplate>
+                <td runat="server" style="background-color: #FFCC66;color: #000080;">pNo:
+                    <asp:Label ID="pNoLabel1" runat="server" Text='<%# Eval("pNo") %>' />
+                    <br />
+                    帳號:
+                    <asp:TextBox ID="accountTextBox" runat="server" Text='<%# Bind("account") %>' />
+                    <br />
+                    <asp:TextBox ID="pictureTextBox" runat="server" Text='<%# Bind("picture") %>' />
+                    <br />category:
+                    <asp:TextBox ID="categoryTextBox" runat="server" Text='<%# Bind("category") %>' />
+                    <br />pName:
+                    <asp:TextBox ID="pNameTextBox" runat="server" Text='<%# Bind("pName") %>' />
+                    <br />price:
+                    <asp:TextBox ID="priceTextBox" runat="server" Text='<%# Bind("price") %>' />
+                    <br />stock:
+                    <asp:TextBox ID="stockTextBox" runat="server" Text='<%# Bind("stock") %>' />
+                    <br />
+                    Introduction:
+                    <asp:TextBox ID="IntroductionTextBox" runat="server" Text='<%# Bind("Introduction") %>' />
+                    <br />
+                    創建時間:
+                    <asp:TextBox ID="createTimeTextBox" runat="server" Text='<%# Bind("createTime") %>' />
+                    <br />
+                    <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="更新" />
+                    <br />
+                    <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="取消" />
+                    <br /></td>
+            </EditItemTemplate>
+            <EmptyDataTemplate>
+                <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
+                    <tr runat="server">
+                        <td runat="server">查無此資料哦！</td>
+                    </tr>
+                </table>
+            </EmptyDataTemplate>
+            <EmptyItemTemplate>
+<td runat="server" />
+            </EmptyItemTemplate>
+            <GroupTemplate>
+                <tr id="itemPlaceholderContainer" runat="server">
+                    <td id="itemPlaceholder" runat="server"></td>
+                </tr>
+            </GroupTemplate>
+            <InsertItemTemplate>
+                <td runat="server" style="">帳號:
+                    <asp:TextBox ID="accountTextBox" runat="server" Text='<%# Bind("account") %>' />
+                    <br />
+                    <asp:TextBox ID="pictureTextBox" runat="server" Text='<%# Bind("picture") %>' />
+                    <br />category:
+                    <asp:TextBox ID="categoryTextBox" runat="server" Text='<%# Bind("category") %>' />
+                    <br />pName:
+                    <asp:TextBox ID="pNameTextBox" runat="server" Text='<%# Bind("pName") %>' />
+                    <br />price:
+                    <asp:TextBox ID="priceTextBox" runat="server" Text='<%# Bind("price") %>' />
+                    <br />stock:
+                    <asp:TextBox ID="stockTextBox" runat="server" Text='<%# Bind("stock") %>' />
+                    <br />
+                    Introduction:
+                    <asp:TextBox ID="IntroductionTextBox" runat="server" Text='<%# Bind("Introduction") %>' />
+                    <br />
+                    創建時間:
+                    <asp:TextBox ID="createTimeTextBox" runat="server" Text='<%# Bind("createTime") %>' />
+                    <br />
+                    <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="插入" />
+                    <br />
+                    <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="清除" />
+                    <br /></td>
+            </InsertItemTemplate>
+            <ItemTemplate>
+                <td runat="server" style="background-color: #FFFBD6; color: #333333;">帳號:
+                    <asp:Label ID="accountLabel" runat="server" Text='<%# Eval("account") %>' />
+                    <br />
+                    <asp:Image ID="Image2" runat="server" Height="150px" ImageUrl='<%# Eval("picture") %>' Width="150px" />
+                    <br />種類:
+                    <asp:Label ID="categoryLabel" runat="server" Text='<%# Eval("category") %>' />
+                    <br />
+                    商品名稱:
+                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl='<%# Eval("pNo", "ProductDetail-second.aspx?pNo={0}") %>' Text='<%# Eval("pName") %>'></asp:HyperLink>
+                    <br />價格:
+                    <asp:Label ID="priceLabel" runat="server" Text='<%# Eval("price") %>' />
+                    <br />
+                    庫存:
+                    <asp:Label ID="stockLabel" runat="server" Text='<%# Eval("stock") %>' />
+                    <br />
+                    介紹:
+                    <asp:Label ID="IntroductionLabel" runat="server" Text='<%# Eval("Introduction") %>' />
+                    <br />
+                    創建時間:
+                    <asp:Label ID="createTimeLabel" runat="server" Text='<%# Eval("createTime") %>' />
+                    <br />
+                    <asp:Button ID="btn_AddCart" runat="server" CommandArgument='<%# Eval("pNo") %>' CommandName="AddCart" Text="加入購物車" />
+                </td>
+            </ItemTemplate>
+            <LayoutTemplate>
+                <table runat="server">
+                    <tr runat="server">
+                        <td runat="server">
+                            <table id="groupPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
+                                <tr id="groupPlaceholder" runat="server">
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr runat="server">
+                        <td runat="server" style="text-align: center;background-color: #FFCC66;font-family: Verdana, Arial, Helvetica, sans-serif;color: #333333;">
+                            <asp:DataPager ID="DataPager1" runat="server" PageSize="12">
+                                <Fields>
+                                    <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
+                                    <asp:NumericPagerField />
+                                    <asp:NextPreviousPagerField ButtonType="Button" ShowLastPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
+                                </Fields>
+                            </asp:DataPager>
+                        </td>
+                    </tr>
+                </table>
+            </LayoutTemplate>
+            <SelectedItemTemplate>
+                <td runat="server" style="background-color: #FFCC66;font-weight: bold;color: #000080;">pNo:
+                    <asp:Label ID="pNoLabel" runat="server" Text='<%# Eval("pNo") %>' />
+                    <br />帳號:
+                    <asp:Label ID="accountLabel" runat="server" Text='<%# Eval("account") %>' />
+                    <br />
+                    <asp:Label ID="pictureLabel" runat="server" Text='<%# Eval("picture") %>' />
+                    <br />category:
+                    <asp:Label ID="categoryLabel" runat="server" Text='<%# Eval("category") %>' />
+                    <br />pName:
+                    <asp:Label ID="pNameLabel" runat="server" Text='<%# Eval("pName") %>' />
+                    <br />price:
+                    <asp:Label ID="priceLabel" runat="server" Text='<%# Eval("price") %>' />
+                    <br />stock:
+                    <asp:Label ID="stockLabel" runat="server" Text='<%# Eval("stock") %>' />
+                    <br />
+                    Introduction:
+                    <asp:Label ID="IntroductionLabel" runat="server" Text='<%# Eval("Introduction") %>' />
+                    <br />
+                    創建時間:
+                    <asp:Label ID="createTimeLabel" runat="server" Text='<%# Eval("createTime") %>' />
+                    <br />
+                </td>
+            </SelectedItemTemplate>
+        </asp:ListView>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:Anotherconnection %>" SelectCommand="SELECT [pNo], [account], [picture], [category], [pName], [price], [stock], [Introduction], [createTime] FROM [Product] WHERE (([pName] LIKE '%' + @pName + '%') AND ([category] = @category) AND([justFor] = '')AND([stock] &gt;'0')) ">
+            <SelectParameters>
+                <asp:ControlParameter ControlID="TextBox1" Name="pName" PropertyName="Text" Type="String" />
+                <asp:ControlParameter ControlID="DropDownList1" Name="category" PropertyName="SelectedValue" Type="String" />
+            </SelectParameters>
+        </asp:SqlDataSource>
+    </div>
+    <div>
+        <br>
+        <br>
+        <asp:Label ID="lbl_Message" runat="server" ForeColor="#FF3300" style="font-size: x-large"></asp:Label>
+        <br />
+
+    </div>
+</asp:Content>
+
